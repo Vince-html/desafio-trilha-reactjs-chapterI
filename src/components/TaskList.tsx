@@ -15,28 +15,29 @@ export function TaskList() {
   const [newTaskTitle, setNewTaskTitle] = useState('');
 
   function handleCreateNewTask() {    
-    if (newTaskTitle === '')  {
-    return null
-    } else {
-      const task = {        
-        id: new Date().getTime(),
-        title: newTaskTitle,
-        isComplete: false
-      }
-      setTasks([task].concat(tasks))   
-      setNewTaskTitle('')   
-    }  
+    if (!newTaskTitle) return;
+  
+    const newTask = {        
+      id: new Date().getTime(),
+      title: newTaskTitle,
+      isComplete: false
+    }
+    setTasks(s => [...s, newTask]);   
+    setNewTaskTitle('')   
+
   }
 
   function handleToggleTaskCompletion(id: number) {
-    if (tasks.filter(task => task.id === id)) {
-      setTasks((prevState => prevState.map(item => item.id === id ? {...item, isComplete: !item.isComplete} : item)))
-    }  
+    const checkedTask = tasks.map(item => item.id === id ? {
+      ...item, 
+      isComplete: !item.isComplete
+    } : item)
+    setTasks(checkedTask)    
   }
 
-  function handleRemoveTask(id: number) {        
-    setTasks(tasks.filter(task => task.id !== id))       
-    
+  function handleRemoveTask(id: number) { 
+    const taskFilter = tasks.filter(task => task.id !== id)       
+    setTasks(taskFilter) 
   }
  
 
